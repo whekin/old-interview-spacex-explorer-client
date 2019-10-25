@@ -26,9 +26,31 @@ const GET_LAUNCHES = gql`
 `;
 
 export default function Launches() {
-  const { loading, data, error } = useQuery(GET_LAUNCHES);
+  const { loading, data, error, fetchMore } = useQuery(GET_LAUNCHES);
   if (loading) return <Loading />;
   if (error) return <p>ERROR</p>;
+
+  const handleClick = () => {
+    fetchMore({
+      variables: {
+        after: data.launches.cursor
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return {
+          ...fetchMoreResult,
+          launches: {
+            ...fetchMoreResult.launches,
+            launches: [ 
+              ...prev.launches.launches,
+              ...fetchMoreResult.launches.launches
+            ]
+          }
+        };
+      }
+    }); 
+  };
+
 
   return (
     <>
@@ -39,6 +61,9 @@ export default function Launches() {
             key={launch.id}
             launch={launch} />
         ))}
+      <Button
+        onClick={handleClick}   
+      >Load More</Button>
     </>
   );
 }
