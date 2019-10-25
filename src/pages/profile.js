@@ -25,7 +25,11 @@ export default function Profile() {
 
   if (loading) return <Loading />;
   if (error) return <p>error</p>;
+<<<<<<< HEAD
 
+=======
+  console.log(data);
+>>>>>>> 117e1bde440b795c5ea8af55d8e9efb7bd877fba
   return (
     <>
       <Header>My Trips</Header>
