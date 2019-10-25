@@ -26,9 +26,7 @@ const link = new HttpLink({
   uri: "http://localhost:4000",
   headers: {
     authorization: localStorage.getItem("token")
-  },
-  typeDefs,
-  resolvers
+  }
 });
 
 cache.writeData({
@@ -40,7 +38,9 @@ cache.writeData({
 
 const client = new ApolloClient({
   cache,
-  link
+  link,
+  typeDefs,
+  resolvers
 });
 
 injectStyles();

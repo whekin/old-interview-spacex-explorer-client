@@ -9,6 +9,7 @@ import { ActionButton } from '../containers';
 export const GET_LAUNCH_DETAILS = gql`
   query LaunchDetails($launchId: ID!) {
     launch(id: $launchId) {
+      isInCart @client
       site
       rocket {
         type
@@ -29,6 +30,7 @@ export default function Launch({ launchId }) {
     });
   if (loading) return <Loading />;
   if (error) return <p>ERROR</p>;
+
   return (
     <>
       <Header image={data.launch.mission.missionPatch}>

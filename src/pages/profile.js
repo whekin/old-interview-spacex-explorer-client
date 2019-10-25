@@ -5,7 +5,7 @@ import { LAUNCH_TILE_DATA } from './launches';
 
 import { Loading, Header, LaunchTile } from '../components';
 
-const GET_MY_TRIPS = gql`
+export const GET_MY_TRIPS = gql`
   query GetMyTrips {
     me {
       id
@@ -32,7 +32,6 @@ export default function Profile() {
         ? data.me.trips.map(launch => <LaunchTile key={launch.id} launch={launch} />)
         : <p>You have not booked any trips yet</p>
       }
-      <LaunchTile />
     </>
   );
 }

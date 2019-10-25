@@ -3,9 +3,9 @@ import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { Loading, LoginForm } from '../components';
 import gql from 'graphql-tag';
 
-const LOGIN_USER = gql`
-  mutation LoginUser($login: String!) {
-    login(login: $login)
+export const LOGIN_USER = gql`
+  mutation Login($email: String!) {
+    login(email: $email)
   }
 `;
 
@@ -15,7 +15,7 @@ export default function Login() {
     LOGIN_USER,
     {
       onCompleted: ({ login }) => {
-        localStorage.set("toket", login);
+        localStorage.setItem("token", login);
         client.writeData({ data: { isLoggedIn: true } }); 
       }
     });
@@ -23,9 +23,5 @@ export default function Login() {
   if (loading) return <Loading />;
   if (error) return <p>An error occerred</p>;
 
-  return (
-    <>
-      <LoginForm login={login} />
-    </>
-  );
+  return <LoginForm login={login} />;
 }

@@ -6,6 +6,7 @@ import { Header, Button, LaunchTile, Loading } from '../components';
 
 export const LAUNCH_TILE_DATA = gql`
   fragment LaunchTile on Launch {
+    __typename
     id
     isBooked
     rocket {
@@ -19,7 +20,7 @@ export const LAUNCH_TILE_DATA = gql`
   }
 `;
 
-const GET_LAUNCHES = gql`
+export const GET_LAUNCHES = gql`
   query LaunchesList($after: String) {
     launches(after: $after) {
       cursor
@@ -67,7 +68,7 @@ export default function Launches() {
           <LaunchTile
             key={launch.id}
             launch={launch} />
-        ))}
+        ))} 
       <Button
         onClick={handleClick}   
       >Load More</Button>
