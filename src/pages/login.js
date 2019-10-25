@@ -4,7 +4,7 @@ import { Loading, LoginForm } from '../components';
 import gql from 'graphql-tag';
 
 const LOGIN_USER = gql`
-  mutaion LoginUser($login: String!) {
+  mutation LoginUser($login: String!) {
     login(login: $login)
   }
 `;
