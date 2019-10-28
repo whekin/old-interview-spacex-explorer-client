@@ -23,7 +23,7 @@ const IsLoggedIn = () => {
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: "spacex-explorer-server.herokuapp.com:4000",
+  uri: "https://spacex-explorer-server.herokuapp.com",
   headers: {
     authorization: localStorage.getItem("token")
   }

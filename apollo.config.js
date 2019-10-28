@@ -3,4 +3,4 @@ export default {
     "name": "SpaceX Expolorer [web]",
     "service": "spacex-expolorer"
   }
-}
+};
