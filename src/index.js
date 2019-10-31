@@ -8,7 +8,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Pages from './pages';
 import Login from './pages/login';
-import injectStyles from './styles';
+import globalStyles from './styles';
+import { Global } from '@emotion/core';
 
 const URI = process.env.NODE_ENV === "production" ? "https://spacex-explorer-server.herokuapp.com" : "http://localhost:4000";
 
@@ -45,10 +46,12 @@ const client = new ApolloClient({
   resolvers
 });
 
-injectStyles();
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <IsLoggedIn />
-  </ApolloProvider>,
+  <>
+    <Global styles={globalStyles} />
+    <ApolloProvider client={client}>
+      <IsLoggedIn />
+    </ApolloProvider>
+  </>,
   document.querySelector("#root")
 );

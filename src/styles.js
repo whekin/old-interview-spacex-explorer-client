@@ -1,4 +1,4 @@
-import { injectGlobal } from 'react-emotion';
+import { css } from '@emotion/core';
 
 export const unit = 8;
 export const colors = {
@@ -11,7 +11,7 @@ export const colors = {
   textSecondary: '#747790'
 };
 
-export default () => injectGlobal({
+export default css({
   [['html', 'body']]: {
     height: '100%',
   },
