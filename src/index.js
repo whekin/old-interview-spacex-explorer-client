@@ -10,7 +10,7 @@ import Pages from './pages';
 import Login from './pages/login';
 import injectStyles from './styles';
 
-const URI = process.env.NODE_ENV === "production" ? "https://spacex-explorer-server.herokuap.com" : "http://localhost:4000";
+const URI = process.env.NODE_ENV === "production" ? "https://spacex-explorer-server.herokuapp.com" : "http://localhost:4000";
 
 const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
