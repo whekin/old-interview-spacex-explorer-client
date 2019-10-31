@@ -39,6 +39,8 @@ export default function Launches() {
   if (error) return <p>ERROR</p>;
 
   const handleClick = () => {
+    if (!data.launches.hasMore) return;
+
     fetchMore({
       variables: {
         after: data.launches.cursor
@@ -68,10 +70,14 @@ export default function Launches() {
           <LaunchTile
             key={launch.id}
             launch={launch} />
-        ))} 
-      <Button
-        onClick={handleClick}   
-      >Load More</Button>
+        ))}
+      { data.launches.hasMore &&
+        <Button
+          onClick={handleClick}   
+        >
+          Load More
+        </Button>
+      }
     </>
   );
 }
