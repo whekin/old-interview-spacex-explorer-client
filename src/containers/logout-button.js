@@ -10,8 +10,8 @@ export default function LogoutButton() {
   return (
     <StyledButton
       onClick={() => {
-        client.writeData({ data: { isLoggedIn: false } });
         client.resetStore();
+        client.writeData({ data: { isLoggedIn: false } });
         localStorage.clear();
       }}
     >

@@ -29,7 +29,7 @@ export default function Launch({ launchId }) {
       }
     });
   if (loading) return <Loading />;
-  if (error) return <p>ERROR</p>;
+  if (error) return <p>ERROR {error.message}</p>;
 
   return (
     <>
