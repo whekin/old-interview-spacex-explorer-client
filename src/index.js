@@ -50,8 +50,6 @@ const authMiddleware = new ApolloLink((operation, forward) => {
     }
   });
 
-  applyDefaultCache();
-
   return forward(operation);
 });
 
