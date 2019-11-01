@@ -17,7 +17,7 @@ import { Global } from '@emotion/core';
 
 const URI = process.env.NODE_ENV === "production" ? "https://spacex-explorer-server.herokuapp.com" : "http://localhost:4000";
 
-const defaultCache = () => cache.writeData({
+const applyDefaultCache = () => cache.writeData({
   data: {
     isLoggedIn: !!localStorage.getItem("token"),
     cartItems: []
@@ -50,12 +50,12 @@ const authMiddleware = new ApolloLink((operation, forward) => {
     }
   });
 
-  defaultCache();
+  applyDefaultCache();
 
   return forward(operation);
 });
 
-defaultCache();
+applyDefaultCache();
 
 const client = new ApolloClient({
   cache,
