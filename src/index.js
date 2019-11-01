@@ -1,13 +1,17 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
+import { ApolloLink, concat } from 'apollo-link';
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+
 import { typeDefs, resolvers } from './resolvers';
-import React from 'react';
-import ReactDOM from 'react-dom';
 import Pages from './pages';
 import Login from './pages/login';
+
 import globalStyles from './styles';
 import { Global } from '@emotion/core';
 
@@ -32,6 +36,16 @@ const link = new HttpLink({
   }
 });
 
+const authMiddleware = new ApolloLink((operation, forward) => {
+  operation.setContext({
+    headers: {
+      authorization: localStorage.getItem("token") || null
+    }
+  });
+
+  return forward(operation);
+});
+
 cache.writeData({
   data: {
     isLoggedIn: !!localStorage.getItem("token"),
@@ -41,9 +55,9 @@ cache.writeData({
 
 const client = new ApolloClient({
   cache,
-  link,
   typeDefs,
-  resolvers
+  resolvers,
+  link: concat(authMiddleware, link)
 });
 
 ReactDOM.render(
