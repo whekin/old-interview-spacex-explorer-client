@@ -57,7 +57,7 @@ export default function ActionButton({ isBooked, id, isInCart }) {
         data-testid={'action-button'}
       >
         {isBooked
-          ? 'Cancel This Trip'
+          ? (loading ? 'Canceling This Trip' : 'Cancel This Trip')
           : isInCart
             ? (loading ? 'Removing from Cart' : 'Remove from Cart')
             : (loading ? 'Adding to Cart' : 'Add to Cart') }
