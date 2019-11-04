@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -46,3 +47,11 @@ export default function BookTrips({ cartItems }) {
       </Button>
     );
 }
+
+BookTrips.propTypes = {
+  cartItems: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string])
+  ).isRequired
+};

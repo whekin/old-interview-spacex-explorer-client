@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { size } from 'polished';
 
@@ -30,6 +31,11 @@ export default function Header({ image, children = 'Space Explorer' }) {
     </Container>
   );
 }
+
+Header.propTypes = {
+  image: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
+};
 
 /**
  * STYLED COMPONENTS USED IN THIS FILE ARE BELOW HERE

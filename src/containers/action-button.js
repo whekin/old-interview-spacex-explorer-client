@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
@@ -65,3 +66,9 @@ export default function ActionButton({ isBooked, id, isInCart }) {
     </div>
   );
 }
+
+ActionButton.propTypes = {
+  isBooked: PropTypes.bool.isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  isInCart: PropTypes.bool.isRequired
+};
