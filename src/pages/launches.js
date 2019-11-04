@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { Header, Button, LaunchTile, Loading } from '../components';
+import { NetworkStatus } from 'apollo-client';
 
 export const LAUNCH_TILE_DATA = gql`
   fragment LaunchTile on Launch {
@@ -34,12 +35,17 @@ export const GET_LAUNCHES = gql`
 `;
 
 export default function Launches() {
-  const { loading, data, error, fetchMore } = useQuery(GET_LAUNCHES);
-  if (loading) return <Loading />;
+  const { loading, data, error, fetchMore, networkStatus } = useQuery(
+    GET_LAUNCHES,
+    {
+      notifyOnNetworkStatusChange: true
+    });
+
+  if (loading && networkStatus !== NetworkStatus.fetchMore) return <Loading />;
   if (error) return <p>ERROR</p>;
 
   const handleClick = () => {
-    if (!data.launches.hasMore) return;
+    if (!data.launches.hasMore || networkStatus === NetworkStatus.fetchMore) return;
 
     fetchMore({
       variables: {
@@ -75,7 +81,10 @@ export default function Launches() {
         <Button
           onClick={handleClick}   
         >
-          Load More
+          {networkStatus === NetworkStatus.fetchMore
+            ? "Loading..."
+            : "Load More"
+          }
         </Button>
       }
     </>

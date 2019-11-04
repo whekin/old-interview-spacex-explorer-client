@@ -32,30 +32,35 @@ export default function ActionButton({ isBooked, id, isInCart }) {
     isBooked ? CANCEL_TRIP : TOGGLE_CART,
     {
       variables: { launchId: id },
+      awaitRefetchQueries: true,
       refetchQueries: [
         {
           query: GET_LAUNCH_DETAILS,
           variables: { launchId: id },
         },
-      ]
+      ],
     }
   );
 
-  if (loading) return <p>Loading...</p>;
+  const handleClick = () => {
+    if (loading) return;
+    mutate();
+  };
+
   if (error) return <p>An error occurred</p>;
 
   return (
     <div>
       <Button
-        onClick={mutate}
+        onClick={handleClick}
         isBooked={isBooked}
         data-testid={'action-button'}
       >
         {isBooked
-          ? 'Cancel This Trip'
+          ? (loading ? 'Canceling This Trip' : 'Cancel This Trip')
           : isInCart
-            ? 'Remove from Cart'
-            : 'Add to Cart'}
+            ? (loading ? 'Removing from Cart' : 'Remove from Cart')
+            : (loading ? 'Adding to Cart' : 'Add to Cart') }
       </Button>
     </div>
   );
