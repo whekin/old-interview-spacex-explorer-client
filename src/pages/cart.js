@@ -1,31 +1,73 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { Header, Loading } from '../components';
-import { CartItem, BookTrips } from '../containers';
+import { Header, Loading, LaunchTile } from '../components';
+import { BookTrips } from '../containers';
+import { LAUNCH_TILE_DATA } from './launches';
 
-export const GET_CART_ITEMS = gql`
-  query GetCartItems {
-    cartItems @client
+export const GET_CART = gql`
+  query GetCart {
+    cart {
+      launches {
+        ...LaunchTile
+      }
+    }
+  }
+  ${LAUNCH_TILE_DATA}
+`;
+
+export const ADD_TO_CART = gql`
+  mutation AddToCart($launchId: ID!) {
+    addToCart(launchId: $launchId) {
+      success
+      message
+    }
   }
 `;
 
+export const REMOVE_FROM_CART = gql`
+  mutation RemoveFromCart($launchId: ID!) {
+    removeFromCart(launchId: $launchId) {
+      success
+      message
+    }
+  }
+`;
+
+export const CLEAR_CART = gql`
+  mutation ClearCart {
+    clearCart {
+      success
+      message
+      cart {
+        launches {
+          id
+        }
+      }
+    }
+  }
+`;
 
 export default function Cart() {
-  const { loading, data, error } = useQuery(GET_CART_ITEMS);
+  const { loading, data, error } = useQuery(
+    GET_CART,
+    { fetchPolicy: 'network-only' });
   if (loading) return <Loading />;
   if (error) return <p>error</p>;
+
+  const { cart: { launches } } = data;
+
   return (
     <>
       <Header>My Cart</Header>
-      { !data.cartItems || !data.cartItems.length
+      { !launches || !launches.length
         ? <p data-testid="empty-message">No items in your cart</p>
         : (
           <>
-            { data.cartItems.map(launchId => (
-              <CartItem key={launchId} launchId={launchId} />
+            { launches.map((launch) => (
+              <LaunchTile key={launch.id} launch={launch} />
             ))}
-            <BookTrips cartItems={data.cartItems} />
+            <BookTrips launchIds={launches.map((launch) => launch.id)} />
           </>
         )}
     </>

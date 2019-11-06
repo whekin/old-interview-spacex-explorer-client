@@ -19,8 +19,7 @@ const URI = process.env.NODE_ENV === "production" ? "https://spacex-explorer-ser
 
 export const defaultCache = {
   data: {
-    isLoggedIn: !!localStorage.getItem("token"),
-    cartItems: []
+    isLoggedIn: !!localStorage.getItem("token")
   }
 };
 
@@ -60,10 +59,6 @@ const client = new ApolloClient({
   typeDefs,
   resolvers,
   link: concat(authMiddleware, link)
-});
-
-client.onResetStore(() => {
-  cache.writeData(defaultCache);
 });
 
 ReactDOM.render(

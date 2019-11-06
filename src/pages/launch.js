@@ -9,11 +9,20 @@ import { ActionButton } from '../containers';
 export const GET_LAUNCH_DETAILS = gql`
   query LaunchDetails($launchId: ID!) {
     launch(id: $launchId) {
-      isInCart @client
+      isInCart
       site
       rocket {
         type
       }
+      ...LaunchTile
+    }
+  }
+  ${LAUNCH_TILE_DATA}
+`;
+
+export const GET_LAUNCH = gql`
+  query GetLaunch($launchId: ID!) {
+    launch(id: $launchId) {
       ...LaunchTile
     }
   }
