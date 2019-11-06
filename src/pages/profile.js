@@ -21,7 +21,7 @@ export const GET_MY_TRIPS = gql`
 export default function Profile() {
   const { loading, data, error } = useQuery(
     GET_MY_TRIPS,
-    { fetchPolicy: "network-only" });
+    { fetchPolicy: "cache-and-network" });
 
   if (loading) return <Loading />;
   if (error) return <p>error</p>;

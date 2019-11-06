@@ -1,21 +1,19 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { Header, Loading } from '../components';
-import { CartItem, BookTrips } from '../containers';
-
-export const GET_CART_ITEMS = gql`
-  query GetCartItems {
-    cartItems @client
-  }
-`;
+import { Header, Loading, LaunchTile } from '../components';
+import { BookTrips } from '../containers';
+import { LAUNCH_TILE_DATA } from './launches';
 
 export const GET_CART = gql`
   query GetCart {
     cart {
-      launches
+      launches {
+        ...LaunchTile
+      }
     }
   }
+  ${LAUNCH_TILE_DATA}
 `;
 
 export const ADD_TO_CART = gql`
@@ -42,30 +40,34 @@ export const CLEAR_CART = gql`
       success
       message
       cart {
-        launches
+        launches {
+          id
+        }
       }
     }
   }
 `;
 
 export default function Cart() {
-  const { loading, data, error } = useQuery(GET_CART_ITEMS);
+  const { loading, data, error } = useQuery(
+    GET_CART,
+    { fetchPolicy: 'network-only' });
   if (loading) return <Loading />;
   if (error) return <p>error</p>;
 
-  const { cartItems } = data;
+  const { cart: { launches } } = data;
 
   return (
     <>
       <Header>My Cart</Header>
-      { !cartItems || !cartItems.length
+      { !launches || !launches.length
         ? <p data-testid="empty-message">No items in your cart</p>
         : (
           <>
-            { cartItems.map(launchId => (
-              <CartItem key={launchId} launchId={launchId} />
+            { launches.map((launch) => (
+              <LaunchTile key={launch.id} launch={launch} />
             ))}
-            <BookTrips cartItems={cartItems} />
+            <BookTrips launchIds={launches.map((launch) => launch.id)} />
           </>
         )}
     </>

@@ -4,10 +4,8 @@ import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import Button from '../components/button';
-import { GET_LAUNCH } from './cart-item';
-import { CLEAR_CART } from '../pages/cart';
+import { CLEAR_CART, GET_CART } from '../pages/cart';
 
-export { GET_LAUNCH };
 export const BOOK_TRIPS = gql`
   mutation BookTrips($launchIds: [ID]!) {
     bookTrips(launchIds: $launchIds) {
@@ -21,20 +19,18 @@ export const BOOK_TRIPS = gql`
   }
 `;
 
-export default function BookTrips({ cartItems }) {
+export default function BookTrips({ launchIds }) {
   const [clearCart] = useMutation(CLEAR_CART);
   const [bookTrips, { loading, data }] = useMutation(
     BOOK_TRIPS,
     {
-      variables: { launchIds: cartItems },
+      variables: { launchIds: launchIds },
       awaitRefetchQueries: true,
-      refetchQueries: cartItems.map(launchId => ({
-        query: GET_LAUNCH,
-        variables: { launchId },
-      })),
+      refetchQueries: [{
+        query: GET_CART,
+      }],
 
-      update(cache) {
-        cache.writeData({ data: { cartItems: [] } });
+      update() {
         clearCart();
       }
     }
@@ -52,7 +48,7 @@ export default function BookTrips({ cartItems }) {
 }
 
 BookTrips.propTypes = {
-  cartItems: PropTypes.arrayOf(
+  launchIds: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string])
