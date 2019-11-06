@@ -1,5 +1,6 @@
 import React from 'react';
 import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import { GET_CART } from './cart';
 import { Loading, LoginForm } from '../components';
 import gql from 'graphql-tag';
 
@@ -14,9 +15,10 @@ export default function Login() {
   const [login, { loading, error }] = useMutation(
     LOGIN_USER,
     {
-      onCompleted: ({ login }) => {
+      onCompleted: async ({ login }) => {
         localStorage.setItem("token", login);
-        client.writeData({ data: { isLoggedIn: true } }); 
+        const { data: { cart: { launches: cartItems } } } = await client.query({ query: GET_CART });
+        client.writeData({ data: { isLoggedIn: true, cartItems } }); 
       }
     });
   

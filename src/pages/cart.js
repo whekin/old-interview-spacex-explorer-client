@@ -4,16 +4,46 @@ import gql from 'graphql-tag';
 import { Header, Loading } from '../components';
 import { CartItem, BookTrips } from '../containers';
 
-// export const _GET_CART_ITEMS = gql`
-//   query GetCartItems {
-//     cartItems @client
-//   }
-// `;
-
 export const GET_CART_ITEMS = gql`
   query GetCartItems {
+    cartItems @client
+  }
+`;
+
+export const GET_CART = gql`
+  query GetCart {
     cart {
       launches
+    }
+  }
+`;
+
+export const ADD_TO_CART = gql`
+  mutation AddToCart($launchId: ID!) {
+    addToCart(launchId: $launchId) {
+      success
+      message
+    }
+  }
+`;
+
+export const REMOVE_FROM_CART = gql`
+  mutation RemoveFromCart($launchId: ID!) {
+    removeFromCart(launchId: $launchId) {
+      success
+      message
+    }
+  }
+`;
+
+export const CLEAR_CART = gql`
+  mutation ClearCart {
+    clearCart {
+      success
+      message
+      cart {
+        launches
+      }
     }
   }
 `;
@@ -23,7 +53,7 @@ export default function Cart() {
   if (loading) return <Loading />;
   if (error) return <p>error</p>;
 
-  const { cart: { launches: cartItems } } = data;
+  const { cartItems } = data;
 
   return (
     <>

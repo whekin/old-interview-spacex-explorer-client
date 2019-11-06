@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 
 import Button from '../components/button';
 import { GET_LAUNCH } from './cart-item';
+import { CLEAR_CART } from '../pages/cart';
 
 export { GET_LAUNCH };
 export const BOOK_TRIPS = gql`
@@ -21,6 +22,7 @@ export const BOOK_TRIPS = gql`
 `;
 
 export default function BookTrips({ cartItems }) {
+  const [clearCart] = useMutation(CLEAR_CART);
   const [bookTrips, { loading, data }] = useMutation(
     BOOK_TRIPS,
     {
@@ -33,6 +35,7 @@ export default function BookTrips({ cartItems }) {
 
       update(cache) {
         cache.writeData({ data: { cartItems: [] } });
+        clearCart();
       }
     }
   );
