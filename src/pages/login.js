@@ -18,7 +18,7 @@ export default function Login() {
       onCompleted: async ({ login }) => {
         localStorage.setItem("token", login);
         const { data: { cart: { launches: cartItems } } } = await client.query({ query: GET_CART });
-        client.writeData({ data: { isLoggedIn: true, cartItems } }); 
+        await client.writeData({ data: { isLoggedIn: true, cartItems } }); 
       }
     });
   

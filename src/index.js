@@ -8,7 +8,7 @@ import { ApolloLink, concat } from 'apollo-link';
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import { typeDefs } from './resolvers';
+import { typeDefs, resolvers } from './resolvers';
 import Pages from './pages';
 import Login from './pages/login';
 
@@ -57,11 +57,8 @@ cache.writeData(defaultCache);
 const client = new ApolloClient({
   cache,
   typeDefs,
+  resolvers,
   link: concat(authMiddleware, link)
-});
-
-client.onResetStore(() => {
-  cache.writeData(defaultCache);
 });
 
 ReactDOM.render(

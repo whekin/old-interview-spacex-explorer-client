@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useApolloClient } from '@apollo/react-hooks';
-
+import { Link } from '@reach/router';
 import { menuItemClassName } from '../components/menu-item';
 import { ReactComponent as ExitIcon } from '../assets/icons/exit.svg';
 
@@ -9,10 +9,12 @@ export default function LogoutButton() {
   const client = useApolloClient();
   return (
     <StyledButton
-      onClick={() => {
+      to="/"
+      onClick={async () => {
         localStorage.clear();
-        client.resetStore();
-        client.writeData({ data: { isLoggedIn: false } });
+        await client.resetStore();
+        await client.writeData({ data: { isLoggedIn: false } });
+
       }}
     >
       <ExitIcon />
@@ -21,8 +23,9 @@ export default function LogoutButton() {
   );
 }
 
-const StyledButton = styled('button')(menuItemClassName, {
+const StyledButton = styled(Link)(menuItemClassName, {
   background: 'none',
   border: 'none',
   padding: 0,
+  textDecoration: 'none'
 });

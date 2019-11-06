@@ -5,3 +5,5 @@ export const typeDefs = gql`
     isLoggedIn: Boolean!
   }
 `;
+
+export const resolvers = {};
