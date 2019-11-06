@@ -8,7 +8,7 @@ import { ApolloLink, concat } from 'apollo-link';
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import { typeDefs, resolvers } from './resolvers';
+import { typeDefs } from './resolvers';
 import Pages from './pages';
 import Login from './pages/login';
 
@@ -19,8 +19,7 @@ const URI = process.env.NODE_ENV === "production" ? "https://spacex-explorer-ser
 
 export const defaultCache = {
   data: {
-    isLoggedIn: !!localStorage.getItem("token"),
-    cartItems: []
+    isLoggedIn: !!localStorage.getItem("token")
   }
 };
 
@@ -58,7 +57,6 @@ cache.writeData(defaultCache);
 const client = new ApolloClient({
   cache,
   typeDefs,
-  resolvers,
   link: concat(authMiddleware, link)
 });
 
