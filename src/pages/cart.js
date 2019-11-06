@@ -3,7 +3,10 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { Header, Loading, LaunchTile } from '../components';
 import { BookTrips } from '../containers';
+import { ClearCart } from '../containers';
 import { LAUNCH_TILE_DATA } from './launches';
+
+import styled from '@emotion/styled';
 
 export const GET_CART = gql`
   query GetCart {
@@ -67,9 +70,18 @@ export default function Cart() {
             { launches.map((launch) => (
               <LaunchTile key={launch.id} launch={launch} />
             ))}
-            <BookTrips launchIds={launches.map((launch) => launch.id)} />
+            <ButtonControl>
+              <ClearCart />
+              <BookTrips launchIds={launches.map((launch) => launch.id)} />
+            </ButtonControl>
           </>
         )}
     </>
   );
 }
+
+const ButtonControl = styled("div")({
+  display: 'flex',
+  flexAlign: 'center',
+
+});
