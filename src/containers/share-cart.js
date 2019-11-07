@@ -9,6 +9,10 @@ export const TOGGLE_IS_CART_SHARED = gql`
   mutation ToggleIsCartShared {
     toggleIsCartShared {
       success
+      cart {
+        id
+        isShared
+      }
     }
   }
 `;
@@ -16,6 +20,7 @@ export const TOGGLE_IS_CART_SHARED = gql`
 export const IS_CART_SHARED = gql`
   query IsCartShared {
     cart {
+      id
       isShared
     }
   }
@@ -31,24 +36,41 @@ export const GET_USER_ID = gql`
 
 export default function ShareCart () {
   const { loading, data, error, client } = useQuery(IS_CART_SHARED);
-  const [toggleIsCartShared] = useMutation(
-    TOGGLE_IS_CART_SHARED,
-    {
-      refetchQueries: [
-        {
-          query: IS_CART_SHARED
-        }
-      ]
-    }
-  );
-
+  const [toggleIsCartShared] = useMutation(TOGGLE_IS_CART_SHARED);
+    
   if (loading) return '';
   if (error) return 'An error occured in ShareCart';
 
-  const { cart: { isShared } } = data;
+  const { cart: { isShared, id: cartId } } = data;
 
   const handleClick = async () => {
-    await toggleIsCartShared();
+    await toggleIsCartShared({
+      optimisticResponse: {
+        __typename: 'Mutation',
+        toggleIsCartShared: {
+          success: true,
+          cart: {
+            id: cartId,
+            isShared: !isShared,
+            __typename: 'Cart'
+          },
+          __typename: 'CartUpdateResponse'
+        }
+      },
+      update(cache, { data: { toggleIsCartShared: { cart } } }) {
+        const data = cache.readQuery({ query: IS_CART_SHARED });
+        cache.writeQuery({
+          query: IS_CART_SHARED,
+          data: {
+            ...data,
+            cart: {
+              ...data.cart,
+              ...cart
+            }
+          }
+        });
+      }
+    });
     if (!isShared) {
       const { data: { me: { id: userId } } } = await client.query({ query: GET_USER_ID });
       const link = `${window.location.href}/${userId}`;
