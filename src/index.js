@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
+
+import { Router } from '@reach/router';
 
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -11,6 +13,7 @@ import gql from 'graphql-tag';
 import { typeDefs, resolvers } from './resolvers';
 import Pages from './pages';
 import Login from './pages/login';
+import SharedCart from './pages/sharedCart';
 
 import globalStyles from './styles';
 import { Global } from '@emotion/core';
@@ -65,7 +68,10 @@ ReactDOM.render(
   <>
     <Global styles={globalStyles} />
     <ApolloProvider client={client}>
-      <IsLoggedIn />
+      <Router primary={false} component={Fragment}>
+        <SharedCart path="cart/:userId" />
+        <IsLoggedIn default />
+      </Router>
     </ApolloProvider>
   </>,
   document.querySelector("#root")
