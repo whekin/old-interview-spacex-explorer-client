@@ -88,4 +88,5 @@ export default function Cart() {
 const FlexContainer = styled("div")({
   display: 'flex',
   flexAlign: 'center',
+  userSelect: 'none'
 });

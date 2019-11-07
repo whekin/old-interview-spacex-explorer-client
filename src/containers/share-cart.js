@@ -21,8 +21,16 @@ export const IS_CART_SHARED = gql`
   }
 `;
 
+export const GET_USER_ID = gql`
+  query MyID {
+    me {
+      id
+    }
+  }
+`;
+
 export default function ShareCart () {
-  const { loading, data, error } = useQuery(IS_CART_SHARED);
+  const { loading, data, error, client } = useQuery(IS_CART_SHARED);
   const [toggleIsCartShared] = useMutation(
     TOGGLE_IS_CART_SHARED,
     {
@@ -39,8 +47,13 @@ export default function ShareCart () {
 
   const { cart: { isShared } } = data;
 
-  const handleClick = () => {
-    toggleIsCartShared();
+  const handleClick = async () => {
+    await toggleIsCartShared();
+    if (!isShared) {
+      const { data: { me: { id: userId } } } = await client.query({ query: GET_USER_ID });
+      const link = `${window.location.href}/${userId}`;
+      alert(`Share cart link: ${link}`);
+    }
   }; 
 
   return (
