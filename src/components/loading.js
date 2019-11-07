@@ -11,7 +11,7 @@ const spin = keyframes`
   }
 `;
 
-const Loading = styled(Logo)(size(64), {
+const Loading = styled(Logo)(({ size: sizeVal = 60 }) => size(sizeVal), {
   display: 'block',
   margin: 'auto',
   fill: colors.grey,

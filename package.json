@@ -16,7 +16,8 @@
     "prop-types": "^15.7.2",
     "react": "^16.9.0-alpha.0",
     "react-dom": "^16.9.0-alpha.0",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "react-tiny-popover": "^3.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
