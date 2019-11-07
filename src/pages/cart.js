@@ -11,6 +11,7 @@ import styled from '@emotion/styled';
 export const GET_CART = gql`
   query GetCart {
     cart {
+      id
       launches {
         ...LaunchTile
       }
@@ -56,7 +57,7 @@ export default function Cart() {
     GET_CART,
     { fetchPolicy: 'network-only' });
   if (loading) return <Loading />;
-  if (error) return <p>error</p>;
+  if (error) return <p>Error occured {error.message}</p>;
 
   const { cart: { launches } } = data;
 
