@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import { GET_LAUNCH_DETAILS } from '../pages/launch';
 import Button from '../components/button';
 import { REMOVE_FROM_CART, ADD_TO_CART } from '../pages/cart';
+import { Loading } from '../components';
 
 // export all queries used in this file for testing
 export { GET_LAUNCH_DETAILS };
@@ -56,11 +57,13 @@ export default function ActionButton({ isBooked, id, isInCart }) {
         isBooked={isBooked}
         data-testid={'action-button'}
       >
-        {isBooked
-          ? (loading ? 'Canceling This Trip' : 'Cancel This Trip')
-          : isInCart
-            ? (loading ? 'Removing from Cart' : 'Remove from Cart')
-            : (loading ? 'Adding to Cart' : 'Add to Cart') }
+        {loading
+          ? <Loading size={30} />
+          : isBooked
+            ? 'Cancel This Trip'
+            : isInCart
+              ? 'Remove from Cart'
+              : 'Add to Cart' }
       </Button>
     </div>
   );

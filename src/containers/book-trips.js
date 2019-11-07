@@ -5,6 +5,8 @@ import gql from 'graphql-tag';
 
 import Button from '../components/button';
 import { CLEAR_CART, GET_CART } from '../pages/cart';
+import { GET_LAUNCH_DETAILS } from './action-button';
+import { Loading } from '../components';
 
 export const BOOK_TRIPS = gql`
   mutation BookTrips($launchIds: [ID]!) {
@@ -26,9 +28,17 @@ export default function BookTrips({ launchIds }) {
     {
       variables: { launchIds: launchIds },
       awaitRefetchQueries: true,
-      refetchQueries: [{
-        query: GET_CART,
-      }],
+      refetchQueries: [
+        {
+          query: GET_CART,
+        },
+        ...launchIds.map((launchId) => (
+          {
+            query: GET_LAUNCH_DETAILS,
+            variables: { launchId }
+          }
+        ))
+      ],
 
       update() {
         clearCart();
@@ -41,7 +51,7 @@ export default function BookTrips({ launchIds }) {
     : (
       <Button onClick={bookTrips} data-testid="book-button">
         { loading
-          ? "Booking All"
+          ? <Loading size={30} /> 
           : "Book All" }
       </Button>
     );

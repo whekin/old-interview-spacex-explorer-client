@@ -76,7 +76,7 @@ export default function Cart() {
               <LaunchTile key={launch.id} launch={launch} />
             ))}
             <FlexContainer>
-              <ClearCart />
+              <ClearCart launchIds={launches.map((launch) => launch.id)} />
               <BookTrips launchIds={launches.map((launch) => launch.id)} />
             </FlexContainer>
           </>
